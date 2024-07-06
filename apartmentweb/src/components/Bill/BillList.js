@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Nav } from 'react-bootstrap';
-import { authApi, endpoints } from '../../configs/API';
+import { useNavigate } from 'react-router-dom';
+import { Card, Button, Row, Col, Tab, Tabs } from 'react-bootstrap';
 import CustomNavbar from '../../components/Navbar/Navbar';
-import './Bill.css'; // Import CSS file for custom styling
+import { authApi, endpoints } from '../../configs/API';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import './BillList.css';
 
 const BillList = () => {
-  const api = authApi(); // Initialize authApi instance
+  const api = authApi();
   const [bills, setBills] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBills = async () => {
@@ -24,11 +27,6 @@ const BillList = () => {
     fetchBills();
   }, [filter, api]);
 
-  const handleSelectBill = (selectedBill) => {
-    console.log('Selected Bill:', selectedBill);
-    // Example navigation if using React Router: history.push(`/bill/${selectedBill.id}`);
-  };
-
   const handleFilterChange = (value) => {
     setFilter(value);
   };
@@ -40,53 +38,42 @@ const BillList = () => {
   return (
     <>
       <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <div className="bill-list-container">
-        <div className="bill-list-menu">
-          <Nav className="flex-column">
-            <Nav.Item className="title-list">
-              DANH SÁCH HÓA ĐƠN
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link onClick={() => handleFilterChange('all')}>Tất cả</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link onClick={() => handleFilterChange('paid')}>Đã thanh toán</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link onClick={() => handleFilterChange('unpaid')}>Chưa thanh toán</Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </div>
-        <div className="bill-list-table">
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Loại hóa đơn</th>
-                <th>Ngày phát hành</th>
-                <th>Số tiền</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredBills.map(bill => (
-                <tr key={bill.id}>
-                  <td>{bill.id}</td>
-                  <td>{bill.bill_type}</td>
-                  <td>{bill.issue_date}</td>
-                  <td>{bill.amount}</td>
-                  <td>{bill.payment_status}</td>
-                  <td>
-                    <Button variant="primary" onClick={() => handleSelectBill(bill)}>
-                      Chi tiết
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+      <h1 className="title-list">DANH SÁCH HÓA ĐƠN</h1>
+      <div className="container">
+        <Tabs
+          id="filter-tabs"
+          activeKey={filter}
+          onSelect={(value) => handleFilterChange(value)}
+          className="flex"
+        >
+          <Tab eventKey="all" title="Tất cả" className="nav-link" />
+          <Tab eventKey="paid" title="Đã thanh toán" className="nav-link" />
+          <Tab eventKey="unpaid" title="Chưa thanh toán" className="nav-link" />
+        </Tabs>
+      </div>
+
+      <div className="bill-list-cards">
+        <Row>
+          {filteredBills.map(bill => (
+            <Col key={bill.id} xs={12} sm={6} md={4} lg={4} style={{ marginBottom: '20px' }}>
+              <Card>
+                <Card.Body>
+                  <div className="avatar-container">
+                    <img src={bill.avatar} alt={`${bill.first_name} ${bill.last_name}`} className="avatar-img"/>
+                  </div>
+                  <Card.Title>{bill.bill_type}</Card.Title>
+                  <Card.Text>
+                    Số tiền: {bill.amount} VNĐ <br />
+                    Tình trạng thanh toán: {bill.payment_status}
+                  </Card.Text>
+                  <Button onClick={() => navigate(`/bill/${bill.id}`)}>
+                    <KeyboardDoubleArrowRightIcon/>
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </div>
     </>
   );

@@ -3,54 +3,66 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
 .navbar-custom {
-    background-color: white; /* Màu nền của navbar */
     text-transform: uppercase;
-    height: 90px;
+    height: 100px;
+    background-color:#B8860B; 
 }
 
 .navbar-custom .navbar-brand {
-    font-weight: bold; 
-    margin-left: 25px; 
+    font-weight: bold;
     font-size: 30px;
-    color:#B8860B;
+    color: #B8860B;
+    margin-left: 30px;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.34);
 }
 
 .navbar-custom .navbar-brand img {
-    width:70px;
-    height:60px;
+    width: 70px;
+    height: 60px;
 }
 
 .navbar-custom .nav-link {
-    color: #2E8B57; 
-    font-size:15px;
-    font-weight:bold;
-    margin-left:20px; 
+    color: #2E8B57;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left:15px;
+}
+
+.navbar-custom .nav-dropdown {
+    color: #2E8B57;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .navbar-custom .nav-link:hover,
 .navbar-custom .nav-link:focus {
-    color: #B8860B; 
+    text-decoration: underline;
+    background-color: #DAA520;
+    width:25%;
+    height:80px;
+    
 }
 
 .navbar-custom .nav-dropdown {
-    color: #2E8B57; 
+    color: #2E8B57;
+    font-size: 14px;
 }
 
 .navbar-custom .dropdown-menu {
-    background-color: #f8f9fa; 
+    background-color: #f8f9fa;
 }
 
 .navbar-custom .dropdown-item {
-    color:#2E8B57; 
-    font-size: 13px;
+    color: #2E8B57;
+    font-size: 10px;
     font-weight: bold;
     text-align: center;
 }
 
 .navbar-custom .dropdown-item:hover,
 .navbar-custom .dropdown-item:focus {
-    background-color: #B8860B; 
-    color: white; 
+    background-color: #DAA520;
+    color: white;
     font-weight: bold;
     font-style: italic;
 }
@@ -59,14 +71,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
 }
 
 .searchInput {
     border: 1px solid #B8860B;
     border-radius: 30px;
-    width:170px;
-    height:35px;
+    width: 150px;
+    height: 35px;
 }
 
 .searchButton {
@@ -76,5 +87,6 @@
 }
 
 .searchButton:hover {
-    background-color: #B8860B; 
+    background-color: #B8860B;
 }
+

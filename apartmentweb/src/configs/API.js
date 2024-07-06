@@ -9,6 +9,7 @@ export const endpoints = {
   changePassword: '/api/residents/change-password/',
   changeAvatar: '/api/residents/change-avatar/',
   bills: '/api/bills/',
+  billDetail: (id) => `/api/bills/${id}/`,
   createBill: '/api/bills/create-bill/',
   updateStatus: (id) => `/api/bills/${id}/`,
   momo: '/payment/',
@@ -38,18 +39,20 @@ export const setAuthToken = (token) => {
 };
 
 export const getAuthToken = () => {
-    try {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        console.error('No token found');
-      }
+  try {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      console.error('No token found in localStorage');
+    } else {
       console.log('Token retrieved successfully:', token);
-      return token; // Return token if found
-    } catch (error) {
-      console.error('Error retrieving token:', error);
-      throw error;
     }
-  };
+    return token; 
+  } catch (error) {
+    console.error('Error retrieving token:', error);
+    throw error;
+  }
+};
+
   
 
 export const authApi = () => {
@@ -58,7 +61,7 @@ export const authApi = () => {
     return axios.create({
       baseURL: BASE_URL,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer rpboJJxM11DGjgQxntXT61SgtwXgx2`,
       },
     });
   } catch (error) {
