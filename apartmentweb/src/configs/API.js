@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.7:8000/';
+const BASE_URL = 'http://192.168.1.7:8000';
 
 export const endpoints = {
   residents: '/api/residents/',
@@ -53,15 +53,13 @@ export const getAuthToken = () => {
   }
 };
 
-  
-
 export const authApi = () => {
   try {
     const token = getAuthToken();
     return axios.create({
       baseURL: BASE_URL,
       headers: {
-        Authorization: `Bearer rpboJJxM11DGjgQxntXT61SgtwXgx2`,
+        Authorization: `Bearer ${token}`,
       },
     });
   } catch (error) {

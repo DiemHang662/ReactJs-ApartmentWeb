@@ -25,7 +25,7 @@ const Home = () => {
                 alt={`slide-${index}`}
               />
               <Carousel.Caption>
-                {/* Các caption nếu có */}
+  
               </Carousel.Caption>
             </Carousel.Item>
           ))}

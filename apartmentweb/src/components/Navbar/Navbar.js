@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PowerIcon from '@mui/icons-material/Power';
-import PaymentIcon from '@mui/icons-material/Payment';
-import MenuIcon from '@mui/icons-material/Menu';
-import './Navbar.css'; // Import your CSS file for specific styles
+import PersonIcon from '@mui/icons-material/Person';
+import './Navbar.css'; 
+import { MyUserContext, MyDispatchContext } from '../../configs/Contexts';
 
 const NavbarComponent = ({ searchTerm, setSearchTerm }) => {
+  const user = useContext(MyUserContext);
+  const dispatch = useContext(MyDispatchContext);
 
   const handleSearch = () => {
     // Perform search operation here
@@ -18,6 +20,10 @@ const NavbarComponent = ({ searchTerm, setSearchTerm }) => {
 
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleLogout = () => {
+    dispatch({ type: 'logout' });
   };
 
   return (
@@ -33,14 +39,20 @@ const NavbarComponent = ({ searchTerm, setSearchTerm }) => {
             <Nav.Link as={Link} to="/"><HomeIcon /> Trang chủ </Nav.Link>
             <Nav.Link as={Link} to="/bill"><ReceiptIcon /> Hóa đơn </Nav.Link>
             <Nav.Link as={Link} to="/item"><PowerIcon /> Tủ đồ điện </Nav.Link>
-            <Nav.Link as={Link} to="/payment"><PaymentIcon /> Thanh toán </Nav.Link>
-            <NavDropdown title=" " id="basic-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/profile">Hồ sơ cá nhân</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/feedback">Phản ánh</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/survey">Khảo sát</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/logout">Đăng xuất</NavDropdown.Item>
-            </NavDropdown>
+            {!user ? (
+              <Nav.Link as={Link} to="/login"><PersonIcon /> Đăng nhập </Nav.Link>
+            ) : (
+              <>
+                <Nav.Link as={Link} to="/profile"><PersonIcon /> Chào, {user.last_name}</Nav.Link>
+                <NavDropdown title=" " id="basic-nav-dropdown">
+                  <NavDropdown.Item as={Link} to="/feedback">Phản ánh</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/survey">Khảo sát</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/payment">Thanh toán</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} to="/" onClick={handleLogout}>Đăng xuất</NavDropdown.Item>
+                </NavDropdown>
+              </>
+            )}
           </Nav>
           <Form className="d-flex">
             <FormControl

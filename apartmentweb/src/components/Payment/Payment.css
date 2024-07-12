@@ -1,0 +1,19 @@
+/* Payment.css */
+
+.payment-container {
+    padding: 20px;
+  }
+  
+  .bill-card {
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    border-radius: 7px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  
