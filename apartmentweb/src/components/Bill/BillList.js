@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Button, Row, Col, Tab, Tabs } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form } from 'react-bootstrap';
 import CustomNavbar from '../../components/Navbar/Navbar';
 import { authApi, endpoints } from '../../configs/API';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
@@ -27,8 +27,8 @@ const BillList = () => {
     fetchBills();
   }, [filter, api]);
 
-  const handleFilterChange = (value) => {
-    setFilter(value);
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
   };
 
   const filteredBills = bills.filter(bill =>
@@ -38,42 +38,53 @@ const BillList = () => {
   return (
     <>
       <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <h1 className="title-list">DANH SÁCH HÓA ĐƠN</h1>
+      <h1 className="title-list">Danh sách hóa đơn</h1>
       <div className="container">
-        <Tabs
-          id="filter-tabs"
-          activeKey={filter}
-          onSelect={(value) => handleFilterChange(value)}
-          className="flex"
-        >
-          <Tab eventKey="all" title="Tất cả" className="nav-link" />
-          <Tab eventKey="paid" title="Đã thanh toán" className="nav-link" />
-          <Tab eventKey="unpaid" title="Chưa thanh toán" className="nav-link" />
-        </Tabs>
+        <Form className="filter-form">
+          <Form.Check
+            type="radio"
+            label="Tất cả"
+            name="filterOptions"
+            value="all"
+            checked={filter === 'all'}
+            onChange={handleFilterChange}
+            className="radio-filter"
+          />
+          <Form.Check
+            type="radio"
+            label="Đã thanh toán"
+            name="filterOptions"
+            value="paid"
+            checked={filter === 'paid'}
+            onChange={handleFilterChange}
+            className="radio-filter"
+          />
+          <Form.Check
+            type="radio"
+            label="Chưa thanh toán"
+            name="filterOptions"
+            value="unpaid"
+            checked={filter === 'unpaid'}
+            onChange={handleFilterChange}
+            className="radio-filter"
+          />
+        </Form>
       </div>
 
       <div className="bill-list-cards">
-        <Row>
-          {filteredBills.map(bill => (
-            <Col key={bill.id} xs={12} sm={6} md={4} lg={4} style={{ marginBottom: '20px' }}>
-              <Card>
-                <Card.Body>
-                  <div className="avatar-container">
-                    <img src={bill.avatar} alt={`${bill.first_name} ${bill.last_name}`} className="avatar-img"/>
-                  </div>
-                  <Card.Title>{bill.bill_type}</Card.Title>
-                  <Card.Text>
-                    Số tiền: {bill.amount} VNĐ <br />
-                    Tình trạng thanh toán: {bill.payment_status}
-                  </Card.Text>
-                  <Button onClick={() => navigate(`/bill/${bill.id}`)}>
-                    <KeyboardDoubleArrowRightIcon/>
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {filteredBills.map(bill => (
+          <div key={bill.id} className="bill-item">
+            <img src={bill.image_url} alt={`${bill.first_name} ${bill.last_name}`} className="bill-image" />
+            <div className="bill-info">
+              <div className="bill-type">{bill.bill_type}</div>
+              <div className="bill-amount">Số tiền: {bill.amount} VNĐ</div>
+              <div className="bill-status">Tình trạng thanh toán: {bill.payment_status}</div>
+            </div>
+            <Button className="bill-button" onClick={() => navigate(`/bill/${bill.id}`)}>
+              <KeyboardDoubleArrowRightIcon />
+            </Button>
+          </div>
+        ))}
       </div>
     </>
   );

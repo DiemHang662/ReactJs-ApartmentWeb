@@ -32,7 +32,7 @@ const BillDetail = () => {
       <Container className="bill-detail-container">
         <Row>
           <Col>
-            <img src={bill.avatar} alt={`${bill.first_name} ${bill.last_name}`} className="avatar" />
+            <img src={bill.avatar_url} alt={`${bill.first_name} ${bill.last_name}`} className="avatar" />
           </Col>
           <Col>
             <div className="bill-details">

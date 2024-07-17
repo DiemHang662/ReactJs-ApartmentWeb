@@ -1,19 +1,61 @@
-/* Payment.css */
-
 .payment-container {
-    padding: 20px;
-  }
-  
-  .bill-card {
-    margin-bottom: 20px;
-    border: 1px solid #cccccc;
-    padding: 10px;
-    border-radius: 7px;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-  }
-  
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+title-list{
+  font-size: 25px;
+  color:#B8860B;
+  text-align: center;
+}
+
+.bill-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.bill-item:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.bill-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.bill-info {
+  flex: 1;
+}
+
+.bill-type {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.bill-amount {
+  margin-bottom: 5px;
+}
+
+.bill-status {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.bill-button {
+  background-color: #ee4d2d;
+  border-color: #ee4d2d;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.bill-button:hover {
+  background-color: #ff6347;
+  border-color: #ff6347;
+}

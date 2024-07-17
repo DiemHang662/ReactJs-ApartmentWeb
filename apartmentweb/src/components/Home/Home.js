@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Carousel, Container } from 'react-bootstrap';
 import Navbar from '../../components/Navbar/Navbar'; 
+import Footer from '../../components/Footer/Footer'; 
 import "./Home.css";
 
 const Home = () => {
@@ -9,13 +10,12 @@ const Home = () => {
   const images = [
     'https://xaydungnhatrongoi.vn/wp-content/uploads/2023/09/1-9.jpg',
     'https://sbshouse.vn/wp-content/uploads/2023/10/phong-khach-chung-cu-hien-dai.jpg',
-    'https://xuongmocgocongnghiep.com/upload/images/trang-tri-ban-cong-chung-cu-1.jpg',
+    'https://toquoc.mediacdn.vn/280518851207290880/2022/10/10/image001-16653869111531095951154.jpg',
   ];
 
   return (
     <>
-      <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Container>
+      < div className="container-home">
         <Carousel>
           {images.map((image, index) => (
             <Carousel.Item key={index}>
@@ -30,6 +30,7 @@ const Home = () => {
             </Carousel.Item>
           ))}
         </Carousel>
+        <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
         <div>
           <h1 className="h1">GIỚI THIỆU</h1>
@@ -92,7 +93,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
+      <Footer />
     </>
   );
 };

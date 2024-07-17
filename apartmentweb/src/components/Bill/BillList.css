@@ -1,76 +1,81 @@
-container {
-  margin-left: 70px; 
+.container {
   margin-top: 20px;
 }
 
-.nav-link{
-  color:green;
-}
-.nav-link:hover{
-  color:white;
-  background-color: #B8860B;
-}
-
-.nav-link:hover::after,
-.nav-link:focus::after {
-  color: green; 
-}
-
-h1 {
+.title-list {
   text-align: center;
-  font-size: 30px;
-  color: #B8860B;
+  margin-top: 20px;
   margin-bottom: 20px;
-  margin-top: 30px;
-  font-weight: bold;
+  color:#B8860B;
 }
 
 .bill-list-cards {
-  width: 90%; 
-  padding: 20px;
-  margin-left: 60px; 
-}
-
-.bill-list-cards .card {
-  height: 100%; 
-}
-
-.bill-list-cards .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 10px;
+  padding: 20px;
+  margin-left:50px;
+  margin-right:50px;
 }
 
-.bill-list-cards .card-title {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
+.bill-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
-.bill-list-cards .card-subtitle {
-  font-size: 14px;
-  color: #6C757D;
+.bill-item:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.bill-list-cards .card-text {
-  font-size: 14px;
-  color: #495057;
-  margin-top: 10px;
-}
 
-.bill-list-cards .btn {
-  background-color: #009900	;
-  margin-top: auto;
-  width: 15%; 
-  margin-left: 150px; 
-}
-.avatar-container {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.avatar-img {
-  width: 100%;
-  height: 200px;
+.bill-image {
+  width: 80px;
+  height: 80px;
   object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.bill-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bill-type {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.bill-amount {
+  color:crimson;
+  margin-bottom: 5px;
+}
+
+.bill-status {
+  color: #888;
+}
+
+.bill-button {
+  background-color: crimson;
+  border-color: crimson;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.radio-filter {
+  margin: 10px 20px;
 }

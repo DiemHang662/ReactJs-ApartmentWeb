@@ -16,6 +16,7 @@ const Main = () => {
         </React.StrictMode>
       </MyDispatchContext.Provider>
     </MyUserContext.Provider>
+  
   );
 };
 

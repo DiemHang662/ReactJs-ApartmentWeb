@@ -7,6 +7,10 @@ import Payment from './components/Payment/Payment';
 import Profile from './components/Resident/Profile';
 import ChangePassword from './components/Resident/ChangePassword';
 import ChangeAvatar from './components/Resident/ChangeAvatar';
+import ProductList from './components/Product/ProductList';
+import Feedback from './components/Feedback/Feedback';
+import FeedbackList from './components/Feedback/FeedbackList';
+import FeedbackDetail from './components/Feedback/FeedbackDetail';
 import Login from './components/Resident/Login';
 import './App.css';
 import { MyUserContext } from './configs/Contexts';
@@ -20,15 +24,22 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/bill" element={user ? <BillList /> : <Navigate to="/login" />} />
+          <Route path="/bill/:id" element={user ? <BillDetail /> : <Navigate to="/login" />} />
+
           <Route path="/payment" element={user ? <Payment /> : <Navigate to="/login" />} />
+          <Route path="/product" element={user ? <ProductList /> : <Navigate to="/login" />} />
+          <Route path="/feedback" element={user ? <FeedbackList /> : <Navigate to="/login" />} />
+          <Route path="/feedback/new" element={<Feedback />} />
+          <Route path="/feedback/:id" element={<FeedbackDetail />} />
+
+          <Route path="/login" element={<Login />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/change-password" element={<Profile/>} />
           <Route path="/change-avatar" element={<Profile/>} />
-          <Route path="/bill/:id" element={user ? <BillDetail /> : <Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
+    
   );
 }
 

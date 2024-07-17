@@ -12,6 +12,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [userType, setUserType] = useState('regular'); // New state for select box
   const dispatch = useContext(MyDispatchContext);
 
   const login = async () => {
@@ -47,6 +48,11 @@ const Login = () => {
           payload: user.data,
         });
 
+        if (userType === 'superuser') {
+          // Handle superuser login logic if needed
+          console.log('Superuser login detected');
+        }
+
         navigate('/'); 
       }, 100);
     } catch (ex) {
@@ -57,39 +63,49 @@ const Login = () => {
   return (
     <div className="background">
       <div className="container-login">
-       
-            <h1 className="title">ĐĂNG NHẬP</h1>
-            <Form>
-              <Form.Group controlId="formBasicUsername">
-                <Form.Control
-                  type="text"
-                  placeholder="Tên đăng nhập..."
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="input"
-                />
-              </Form.Group>
-              <Form.Group controlId="formBasicPassword" className="position-relative">
-                <Form.Control
-                  type={secureTextEntry ? 'password' : 'text'}
-                  placeholder="Mật khẩu..."
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input"
-                />
-                <Button
-                  variant="link"
-                  className="password-toggle"
-                  onClick={() => setSecureTextEntry(!secureTextEntry)}
-                >
-                  {secureTextEntry ? <VisibilityOffIcon/> : <VisibilityIcon/>}
-                </Button>
-              </Form.Group>
-              <Button variant="success" onClick={login} className="button">
-                ĐĂNG NHẬP
-              </Button>
-            </Form>
-        
+        <h1 className="title">ĐĂNG NHẬP</h1>
+        <Form>
+        <Form.Group controlId="formBasicUserType">
+            <Form.Select
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              className="input"
+            >
+              <option value="regular">Cư dân</option>
+              <option value="superuser">Quản trị viên</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group controlId="formBasicUsername">
+            <Form.Control
+              type="text"
+              placeholder="Tên đăng nhập..."
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="input"
+            />
+          </Form.Group>
+          <Form.Group controlId="formBasicPassword" className="position-relative">
+            <Form.Control
+              type={secureTextEntry ? 'password' : 'text'}
+              placeholder="Mật khẩu..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input"
+            />
+            <Button
+              variant="link"
+              className="password-toggle"
+              onClick={() => setSecureTextEntry(!secureTextEntry)}
+            >
+              {secureTextEntry ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+            </Button>
+          </Form.Group>
+         
+          <Button variant="success" onClick={login} className="button">
+            ĐĂNG NHẬP
+          </Button>
+        </Form>
       </div>
     </div>
   );

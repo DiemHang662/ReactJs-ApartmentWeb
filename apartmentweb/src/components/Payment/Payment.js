@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { authApi, endpoints } from '../../configs/API';
 import { useNavigate } from 'react-router-dom';
+import CustomNavbar from '../../components/Navbar/Navbar';
 import CryptoJS from 'crypto-js';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import './Payment.css';
 
 const Payment = () => {
   const [bills, setBills] = useState([]);
   const navigate = useNavigate();
   const [token, setToken] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchBills = async () => {
     try {
@@ -75,7 +78,7 @@ const Payment = () => {
 
       console.log('Request Body:', JSON.stringify(requestBody));
 
-      const response = await axios.post('https://test-payment.momo.vn/v2/gateway/api/create', JSON.stringify(requestBody), {
+      const response = await axios.post('/v2/gateway/api/create', JSON.stringify(requestBody), {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -109,31 +112,25 @@ const Payment = () => {
   };
 
   return (
-    <Container className="payment-container">
-      {bills.map((item) => (
-        <Card className="bill-card" key={item.id}>
-          <Card.Body>
-            <Card.Text>
-              <strong>Loại hóa đơn:</strong> {item.bill_type}
-            </Card.Text>
-            <Card.Text>
-              <strong>Số tiền thanh toán:</strong> {item.amount} VND
-            </Card.Text>
-            <Card.Text>
-              <strong>Ngày phát hành:</strong> {item.issue_date}
-            </Card.Text>
-            <Card.Text>
-              <strong>Ngày hết hạn:</strong> {item.due_date}
-            </Card.Text>
-            <div className="button-container">
-              <Button variant="primary" onClick={() => handleMomo(item)}>
-                Thanh toán qua MOMO
-              </Button>
+    <>
+      <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Container className="payment-container">
+      <h1 className="title-list">THANH TOÁN HÓA ĐƠN</h1>
+        {bills.map((item) => (
+          <div key={item.id} className="bill-item">
+            <img src={item.image_url} alt={`${item.first_name} ${item.last_name}`} className="bill-image" />
+            <div className="bill-info">
+              <div className="bill-type">{item.bill_type}</div>
+              <div className="bill-amount">Số tiền: {item.amount} VNĐ</div>
+              <div className="bill-status">Tình trạng thanh toán: {item.payment_status}</div>
             </div>
-          </Card.Body>
-        </Card>
-      ))}
-    </Container>
+            <Button className="btn btn-primary" variant="primary" onClick={() => handleMomo(item)}>
+                  Thanh toán qua MOMO
+                </Button>
+          </div>
+        ))}
+      </Container>
+    </>
   );
 };
 

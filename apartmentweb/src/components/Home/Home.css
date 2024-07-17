@@ -2,16 +2,15 @@
 @import "~slick-carousel/slick/slick-theme.css";
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-.container {
-    margin-top:20px;
-    background-color: white;
-    padding: 10px;
+.container-home {
+    background-color:whitesmoke;
+    margin: 10px 0;
 }
 
 .img-carousel {
     width: 100%; 
-    height: 400px; 
-    object-fit: cover; 
+    height: 200px; 
+    object-fit:cover; 
 }
 
 .intro {
@@ -22,8 +21,9 @@
 }
 
 .imageIntro {
-    width: 50%;
-    height: auto;
+    margin: 0 30px;
+    width: 40%;
+   height: 400px;
 }
 
 .h1, .h2, .h3 {
@@ -72,13 +72,17 @@
 }
 
 .imageContainer img {
-    width: 100%;
-    height: 350px;
+    margin: 0 30px;
+    width: 80%;
+    height: 300px;
     border: 1px solid green;
 }
 
+.imageContainer img:hover {
+    opacity: 0.6;
+}
+
 .text1 {
-    background-color: white;
     color: darkgreen;
     text-align: center;
     font-weight: bold;
