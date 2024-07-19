@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.70.124:8000';
+const BASE_URL = 'http://192.168.1.7:8000';
 
 export const endpoints = {
   residents: '/api/residents/',
@@ -8,27 +8,38 @@ export const endpoints = {
   currentUser: '/api/residents/current-user/',
   changePassword: '/api/residents/change-password/',
   changeAvatar: '/api/residents/change-avatar/',
+  login: '/o/token/',
+
   product: '/api/product/',
+  addProduct:'/api/cart/add-product/',
+  cartSummary: '/api/cart/cart-summary/',
+  updateProductQuantity: '/api/cart/update-product-quantity/',
+  deleteProduct: (id) => `/api/cart/${id}/delete-product/`,
+
   bills: '/api/bills/',
   billDetail: (id) => `/api/bills/${id}/`,
   createBill: '/api/bills/create-bill/',
   updateStatus: (id) => `/api/bills/${id}/`,
   momo: '/payment/',
-  login: '/o/token/',
+  payment: '/api/payment/',
+
   flats: '/api/flats/',
+
   items: '/api/items/',
   createItem: '/api/items/create-item/',
   updateReceived: (id) => `/api/items/${id}/mark_received/`,
+
   feedback: '/api/feedback/',
   feedbackDetail: (id) => `/api/feedback/${id}/`,
   updateResolved: (id) => `/api/feedback/${id}/mark_as_resolved/`,
+
   famembers: '/api/famembers/',
+
   survey: '/api/survey/',
   surveyID: (id) => `/api/survey/${id}/`,
   createSurvey: '/api/survey/create-survey/',
   surveyresult: '/api/surveyresult/',
   surveyresultID: (id) => `/api/surveyresult/${id}/`,
-  payment: '/api/payment/',
 };
 
 export const setAuthToken = (token) => {

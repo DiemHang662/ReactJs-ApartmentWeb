@@ -8,6 +8,7 @@ import Profile from './components/Resident/Profile';
 import ChangePassword from './components/Resident/ChangePassword';
 import ChangeAvatar from './components/Resident/ChangeAvatar';
 import ProductList from './components/Product/ProductList';
+import CartSummary from './components/CartSummary/CartSummary';
 import Feedback from './components/Feedback/Feedback';
 import FeedbackList from './components/Feedback/FeedbackList';
 import FeedbackDetail from './components/Feedback/FeedbackDetail';
@@ -28,6 +29,9 @@ function App() {
 
           <Route path="/payment" element={user ? <Payment /> : <Navigate to="/login" />} />
           <Route path="/product" element={user ? <ProductList /> : <Navigate to="/login" />} />
+          <Route path="/cart-summary" element={user ? <CartSummary /> : <Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/product" />} />
+
           <Route path="/feedback" element={user ? <FeedbackList /> : <Navigate to="/login" />} />
           <Route path="/feedback/new" element={<Feedback />} />
           <Route path="/feedback/:id" element={<FeedbackDetail />} />

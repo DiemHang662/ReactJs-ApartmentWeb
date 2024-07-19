@@ -11,11 +11,29 @@
     color: dodgerblue;
     font-size:large;
     margin-left: 95%;
-    margin-top: 10px;
+    margin-top: 15px;
+    position: relative;
+    display: inline-block;
 }
 
 .cart:hover{
     color:crimson;
+}
+
+.cart-item-count {
+  position: absolute;
+  top: -10px;
+  right: -8px; 
+  background-color: crimson;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
 }
   
   .product-card-col {
@@ -42,9 +60,8 @@
   
   .product-name {
     font-size: 16px;
-    font-weight: bold;
   }
-  
+
   .product-price {
     text-decoration: underline;
     font-style: italic;
@@ -52,12 +69,14 @@
     font-weight: bold;
     font-size: 14px;
   }
-  
+
   .add-to-cart-btn {
     background-color:white;
     color:dodgerblue;
     border: 1px solid dodgerblue;
-    width: 63%;
+    width: 65%;
     align-items: center;
+    margin-left: 50px;
+    font-weight: 400;
   }
   

@@ -50,12 +50,12 @@ const NavbarComponent = ({ searchTerm, setSearchTerm }) => {
               onChange={handleChange}
               aria-label="Search"
             />
-            <Button className="bt-search" variant="light" onClick={handleSearch}>
+            <Button className="bt-search" variant="primary" onClick={handleSearch}>
               <SearchIcon />
             </Button>
           </Form>
           {!user ? (
-            <Button as={Link} to="/login" className="login btn-link"><AccountCircleIcon /></Button>
+            <Button as={Link} to="/login" className="btn-login" variant="primary"><AccountCircleIcon /></Button>
           ) : (
             <Nav.Link as={Link} to="/profile" className="user-info">
               <img src={user.avatar_url} alt="Avatar" className="img-avatar" />

@@ -1,3 +1,4 @@
+
 .nav-link {
   color:white !important;
   display: flex;
@@ -18,16 +19,13 @@
   border-color:#007bff;
 }
 
-.form-control {
-  margin-right: 0 0;
-}
-
 .btn-login {
-  background-color: transparent;
   border: none;
   color: white;
   display: flex;
   align-items: center;
+  margin-top: 5px !important;
+  height:40px !important;
 }
 
 .btn-login:hover {
@@ -44,14 +42,30 @@
 .user-info {
   display: flex;
   align-items: center;
-  color: #000 !important;
+  color: black !important;
 }
 
-.searchInput{
+.searchInput {
   display: flex;
-  border-radius: 20px;
-  width:23% !important;
-  height:40px;
+  width: 25% !important;
+  height: 35px;
+}
+
+.form-control {
+  border-radius: 20px 0 0 20px;
+  border: 1px solid #ced4da;
+  margin-right: 0;
+}
+
+.bt-search {
+  border: none;
+  color: white !important;
+  margin-left: -5px;
+  margin-top: 5px !important;
+}
+
+.bt-search:hover {
+  color: black;
 }
 
 .login{
