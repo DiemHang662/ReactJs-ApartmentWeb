@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Button, Row, Col, Alert } from 'react-bootstrap';
+import { Card, Button, Row, Col, Alert, Pagination } from 'react-bootstrap';
 import { authApi, endpoints } from '../../configs/API';
 import CustomNavbar from '../../components/Navbar/Navbar';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -9,6 +9,8 @@ import './ProductList.css';
 const ProductList = () => {
   const api = authApi();
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [cartItemCount, setCartItemCount] = useState(0);
   const [showAlert, setShowAlert] = useState(false); 
@@ -18,8 +20,9 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get(endpoints.product);
-        setProducts(response.data);
+        const response = await api.get(`${endpoints.product}?page=${currentPage}&page_size=12`);
+        setProducts(response.data.results);
+        setTotalPages(Math.ceil(response.data.count / 12));
       } catch (error) {
         console.error('Error fetching products:', error.response?.data || error.message);
       }
@@ -37,7 +40,7 @@ const ProductList = () => {
 
     fetchProducts();
     fetchCartItemCount();
-  }, [api]);
+  }, [api, currentPage]);
 
   const addToCart = async (productId) => {
     try {
@@ -59,6 +62,26 @@ const ProductList = () => {
     navigate('/cart-summary');
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPagination = () => {
+    let items = [];
+    for (let number = 1; number <= totalPages; number++) {
+      items.push(
+        <Pagination.Item 
+          key={number} 
+          active={number === currentPage} 
+          onClick={() => handlePageChange(number)}
+        >
+          {number}
+        </Pagination.Item>,
+      );
+    }
+    return totalPages > 1 ? <Pagination>{items}</Pagination> : null;
+  };
+
   return (
     <>
       <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -68,12 +91,11 @@ const ProductList = () => {
           <AddShoppingCartIcon />
         </div>
 
-         {showAlert && (
-                <Alert variant="success" style={{ width: '100%', margin: '10px' }}>
-                  {alertMessage}
-                </Alert>
-              )}
-
+        {showAlert && (
+          <Alert variant="success" style={{ width: '100%', margin: '7px 80px' }}>
+            {alertMessage}
+          </Alert>
+        )}
 
         <div className="product-list">
           <Row>
@@ -84,16 +106,17 @@ const ProductList = () => {
                   <Card.Body>
                     <Card.Title className="product-name">{product.name}</Card.Title>
                     <Card.Text className="product-price">Giá: {product.price} VNĐ</Card.Text>
-                   
-                      <Button variant="danger" className="add-to-cart-btn" onClick={() => addToCart(product.id)}>
-                        <AddShoppingCartIcon />  Thêm vào giỏ
-                      </Button>
-                
+                    <Button variant="danger" className="add-to-cart-btn text-primary" onClick={() => addToCart(product.id)}>
+                      <AddShoppingCartIcon /> Thêm vào giỏ
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
             ))}
           </Row>
+          <div className="pagination">
+            {renderPagination()}
+          </div>
         </div>
       </div>
     </>

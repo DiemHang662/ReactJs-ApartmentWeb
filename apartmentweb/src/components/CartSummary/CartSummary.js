@@ -1,31 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button, Alert, FormControl } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Alert, FormControl, Pagination } from 'react-bootstrap';
 import { authApi, endpoints } from '../../configs/API';
 import CustomNavbar from '../../components/Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
 import './CartSummary.css';
 
 const CartSummary = () => {
   const api = authApi();
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [showAlert, setShowAlert] = useState(false); 
   const [alertMessage, setAlertMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await api.get(endpoints.cartSummary);
-        const cartProducts = response.data.cart_products || []; // Đảm bảo rằng luôn là mảng
-        const totalPrice = response.data.total_price || 0; // Đảm bảo rằng luôn là số
+        const response = await api.get(`${endpoints.cartSummary}?page=${currentPage}`);
+        const cartProducts = response.data.cart_products || [];
+        const totalPrice = response.data.total_price || 0;
         setCartItems(cartProducts);
         setTotalPrice(totalPrice);
+        setTotalPages(response.data.total_pages || 1);
       } catch (error) {
         console.error('Error fetching cart items:', error.response?.data || error.message);
       }
     };
 
     fetchCartItems();
-  }, [api]);
+  }, [api, currentPage]);
 
   const updateQuantity = async (productId, quantity) => {
     try {
@@ -59,6 +64,43 @@ const CartSummary = () => {
     }
   };
 
+  const handlePurchase = async () => {
+    try {
+      const cartId = 1; // Thay thế bằng ID giỏ hàng thực tế
+  
+      // Gọi API tạo hóa đơn
+      const response = await api.post(`${endpoints.createBillFromCart}/${cartId}`, {});
+  
+      // Xử lý phản hồi
+      const bill = response.data;
+      setAlertMessage(`Hóa đơn đã được tạo thành công! Mã hóa đơn: ${bill.id}`);
+      setShowAlert(true);
+    } catch (error) {
+      console.error('Error creating bill:', error.response?.data || error.message);
+      alert('Lỗi khi tạo hóa đơn. Vui lòng thử lại sau!');
+    }
+  };
+  
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPagination = () => {
+    let items = [];
+    for (let number = 1; number <= totalPages; number++) {
+      items.push(
+        <Pagination.Item 
+          key={number} 
+          active={number === currentPage} 
+          onClick={() => handlePageChange(number)}
+        >
+          {number}
+        </Pagination.Item>,
+      );
+    }
+    return <Pagination>{items}</Pagination>;
+  };
+
   return (
     <>
       <CustomNavbar />
@@ -67,7 +109,7 @@ const CartSummary = () => {
           <h2 className="text-primary">GIỎ HÀNG CỦA BẠN</h2>
 
           {showAlert && (
-            <Alert variant="success" style={{ width: '100%', margin: '10px' }}>
+            <Alert variant="success" style={{ width: '100%', margin: '7px 80px' }}>
               {alertMessage}
             </Alert>
           )}
@@ -75,11 +117,11 @@ const CartSummary = () => {
           <Table hover className="table">
             <thead>
               <tr>
-                <th>Hình ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Giá</th>
-                <th></th>
+                <th className="head">Hình ảnh</th>
+                <th className="head">Tên sản phẩm</th>
+                <th className="head">Số lượng</th>
+                <th className="head">Giá</th>
+                <th className="head"></th>
               </tr>
             </thead>
             <tbody>
@@ -96,9 +138,9 @@ const CartSummary = () => {
                     />
                   </td>
                   <td className="price">{item.product.price * item.quantity} VNĐ</td>
-                  <td >
+                  <td>
                     <div className="bt">
-                      <Button variant="success" onClick={() => deleteFromCart(item.id)}>Mua ngay</Button>
+                      <Button variant="success" onClick={handlePurchase}>Mua ngay</Button>
                       <Button variant="danger" onClick={() => deleteFromCart(item.id)}>X</Button>
                     </div>
                   </td>
@@ -109,6 +151,10 @@ const CartSummary = () => {
 
           <div className="total-price">
             <h3>Tổng giá: {totalPrice} VNĐ</h3>
+          </div>
+
+          <div className="pagination">
+            {renderPagination()}
           </div>
         </div>
       </div>

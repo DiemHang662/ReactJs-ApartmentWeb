@@ -1,6 +1,6 @@
 .product-list {
-    margin: 20px 40px;
-    padding: 15px 10px;
+    margin: 20px 50px;
+    padding: 15px 25px;
   }
 
 .content  {
@@ -74,9 +74,12 @@
     background-color:white;
     color:dodgerblue;
     border: 1px solid dodgerblue;
-    width: 65%;
-    align-items: center;
+    width: 70%;
     margin-left: 50px;
     font-weight: 400;
+  }
+
+  .add-to-cart-btn:hover {
+    color:white !important;
   }
   

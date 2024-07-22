@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.7:8000';
+const BASE_URL = 'http://192.168.4.124:8000';
 
 export const endpoints = {
   residents: '/api/residents/',
@@ -19,6 +19,7 @@ export const endpoints = {
   bills: '/api/bills/',
   billDetail: (id) => `/api/bills/${id}/`,
   createBill: '/api/bills/create-bill/',
+  createBillFromCart: '/api/bills/create-bill-from-cart/',  
   updateStatus: (id) => `/api/bills/${id}/`,
   momo: '/payment/',
   payment: '/api/payment/',

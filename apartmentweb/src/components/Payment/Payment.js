@@ -2,23 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { authApi, endpoints } from '../../configs/API';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CustomNavbar from '../../components/Navbar/Navbar';
 import CryptoJS from 'crypto-js';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import './Payment.css';
 
 const Payment = () => {
   const [bills, setBills] = useState([]);
   const navigate = useNavigate();
+  const { billId } = useParams(); // Lấy ID hóa đơn từ URL
   const [token, setToken] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
   const fetchBills = async () => {
     try {
       const api = await authApi();
-      const response = await api.get(endpoints.payment);
-      setBills(response.data);
+      const response = await api.get(`${endpoints.payment}/${billId}`);
+      setBills([response.data]); // Giả sử trả về một hóa đơn duy nhất
     } catch (error) {
       console.error('Error fetching bills:', error);
     }
@@ -40,7 +40,7 @@ const Payment = () => {
   useEffect(() => {
     fetchBills();
     fetchToken();
-  }, []);
+  }, [billId]);
 
   const handleMomo = async (item) => {
     try {
@@ -115,7 +115,7 @@ const Payment = () => {
     <>
       <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <Container className="payment-container">
-      <h1 className="title-list">THANH TOÁN HÓA ĐƠN</h1>
+        <h1 className="title-list">THANH TOÁN HÓA ĐƠN</h1>
         {bills.map((item) => (
           <div key={item.id} className="bill-item">
             <img src={item.image_url} alt={`${item.first_name} ${item.last_name}`} className="bill-image" />
@@ -125,8 +125,8 @@ const Payment = () => {
               <div className="bill-status">Tình trạng thanh toán: {item.payment_status}</div>
             </div>
             <Button className="btn btn-primary" variant="primary" onClick={() => handleMomo(item)}>
-                  Thanh toán qua MOMO
-                </Button>
+              Thanh toán qua MOMO
+            </Button>
           </div>
         ))}
       </Container>
