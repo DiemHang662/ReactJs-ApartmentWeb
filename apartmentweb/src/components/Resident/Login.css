@@ -11,10 +11,10 @@
 .container-login {
   background-color: rgba(0, 0, 0, 0.6); 
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-left: 350px;
   width:40%;
-  height: 430px;
+  height: 470px;
 }
 
 .title {
@@ -22,7 +22,7 @@
   color: white;
   font-weight:400;
   text-align: center;
-  margin-bottom: 30px;
+  margin: 25px 5px;
 }
 
 .input {
@@ -37,11 +37,16 @@
 
 .input::placeholder {
   color: white; 
-  
+}
+
+.input.focused option {
+  background-color:whitesmoke;
+  color:black;
+  font-weight: 500;
 }
 
 .button {
-  width: 24%;
+  width: 23%;
   height:50px;
   margin-left: 180px;
   background-color: #00CC00;
@@ -52,8 +57,8 @@
 
 .password-toggle {
   position: absolute;
-  right: 60px; /* Adjust right spacing as needed */
+  right: 60px; 
   top: 48%;
   transform: translateY(-100%);
-  color: white; /* Optional: Set text color to white */
+  color: white; 
 }

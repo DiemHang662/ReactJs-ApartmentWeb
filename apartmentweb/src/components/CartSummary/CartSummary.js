@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Alert, FormControl, Pagination } from 'react-bootstrap';
+import { Table, Button, Alert, FormControl, Pagination, Modal } from 'react-bootstrap';
 import { authApi, endpoints } from '../../configs/API';
 import CustomNavbar from '../../components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,13 @@ const CartSummary = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [showAlert, setShowAlert] = useState(false); 
+  const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [loadingItem, setLoadingItem] = useState(null);
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -64,23 +67,35 @@ const CartSummary = () => {
     }
   };
 
-  const handlePurchase = async () => {
+  const handlePurchase = (item) => {
+    setPaymentMethod('');
+    setLoadingItem(item.id);
+    setShowPaymentModal(true);
+  };
+
+  const handlePayment = async (selectedPaymentMethod) => {
+    setPaymentMethod(selectedPaymentMethod);
+
     try {
-      const cartId = 1; // Thay thế bằng ID giỏ hàng thực tế
-  
-      // Gọi API tạo hóa đơn
-      const response = await api.post(`${endpoints.createBillFromCart}/${cartId}`, {});
-  
-      // Xử lý phản hồi
-      const bill = response.data;
-      setAlertMessage(`Hóa đơn đã được tạo thành công! Mã hóa đơn: ${bill.id}`);
-      setShowAlert(true);
+      const cartId = 1;
+      await api.post(`${endpoints.createBillFromCart(cartId)}`, {
+        payment_method: selectedPaymentMethod
+      });
+
+      if (selectedPaymentMethod === 'Momo') {
+        navigate('/payment');
+      } else {
+        alert('Đơn hàng đang chờ xử lý với phương thức thanh toán tiền mặt.');
+        setShowPaymentModal(false);
+      }
     } catch (error) {
-      console.error('Error creating bill:', error.response?.data || error.message);
-      alert('Lỗi khi tạo hóa đơn. Vui lòng thử lại sau!');
+      console.error('Error processing payment:', error.response?.data || error.message);
+      alert('Lỗi khi xử lý thanh toán. Vui lòng thử lại sau!');
+      setLoadingItem(null);
+      setShowPaymentModal(false);
     }
   };
-  
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -140,7 +155,13 @@ const CartSummary = () => {
                   <td className="price">{item.product.price * item.quantity} VNĐ</td>
                   <td>
                     <div className="bt">
-                      <Button variant="success" onClick={handlePurchase}>Mua ngay</Button>
+                      <Button 
+                        variant={loadingItem === item.id ? 'secondary' : 'success'}
+                        onClick={() => handlePurchase(item)}
+                        abled={loadingItem === item.id}
+                      >
+                        {loadingItem === item.id ? 'Đang chờ' : 'Mua ngay'}
+                      </Button>
                       <Button variant="danger" onClick={() => deleteFromCart(item.id)}>X</Button>
                     </div>
                   </td>
@@ -156,6 +177,16 @@ const CartSummary = () => {
           <div className="pagination">
             {renderPagination()}
           </div>
+ 
+          <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Chọn phương thức thanh toán</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Button variant="primary" onClick={() => handlePayment('Momo')}>Thanh toán qua ví điện tử</Button>
+              <Button variant="secondary" onClick={() => handlePayment('Cash')}>Thanh toán khi nhận hàng</Button>
+            </Modal.Body>
+          </Modal>
         </div>
       </div>
     </>

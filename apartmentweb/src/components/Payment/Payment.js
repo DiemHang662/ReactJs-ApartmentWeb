@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { authApi, endpoints } from '../../configs/API';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import CustomNavbar from '../../components/Navbar/Navbar';
 import CryptoJS from 'crypto-js';
 import './Payment.css';
@@ -10,20 +10,24 @@ import './Payment.css';
 const Payment = () => {
   const [bills, setBills] = useState([]);
   const navigate = useNavigate();
-  const { billId } = useParams(); // Lấy ID hóa đơn từ URL
+  const { billId } = useParams();
   const [token, setToken] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const location = useLocation();
+  const { paymentMethod, status } = location.state || {};
 
+  // Fetch bills from API
   const fetchBills = async () => {
     try {
       const api = await authApi();
-      const response = await api.get(`${endpoints.payment}/${billId}`);
-      setBills([response.data]); // Giả sử trả về một hóa đơn duy nhất
+      const response = await api.get(endpoints.payment);
+      setBills(response.data);
     } catch (error) {
       console.error('Error fetching bills:', error);
     }
   };
 
+  // Fetch token from localStorage
   const fetchToken = async () => {
     try {
       const storedToken = localStorage.getItem('access_token');
@@ -42,6 +46,7 @@ const Payment = () => {
     fetchToken();
   }, [billId]);
 
+  // Handle Momo payment
   const handleMomo = async (item) => {
     try {
       const api = await authApi();
@@ -58,7 +63,6 @@ const Payment = () => {
       const extraData = "";
 
       const rawSignature = `accessKey=${accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${ipnUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${partnerCode}&redirectUrl=${redirectUrl}&requestId=${requestId}&requestType=${requestType}`;
-
       const signature = CryptoJS.HmacSHA256(rawSignature, secretKey).toString(CryptoJS.enc.Hex);
 
       const requestBody = {
@@ -78,7 +82,7 @@ const Payment = () => {
 
       console.log('Request Body:', JSON.stringify(requestBody));
 
-      const response = await axios.post('/v2/gateway/api/create', JSON.stringify(requestBody), {
+      const response = await axios.post('/v2/gateway/api/create', requestBody, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -88,7 +92,6 @@ const Payment = () => {
       if (response.data && response.data.payUrl) {
         const payUrl = response.data.payUrl.trim();
         console.log('Trimmed PayUrl:', payUrl);
-
         window.open(payUrl, '_blank');
 
         try {
@@ -96,7 +99,6 @@ const Payment = () => {
             payment_status: 'PAID',
           });
           console.log('Payment status updated:', updateResponse.data);
-
           fetchBills();
         } catch (updateError) {
           console.error('Error updating payment status:', updateError);
@@ -115,7 +117,10 @@ const Payment = () => {
     <>
       <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <Container className="payment-container">
-        <h1 className="title-list">THANH TOÁN HÓA ĐƠN</h1>
+        <h1 className="title-list text-primary">THANH TOÁN HÓA ĐƠN</h1>
+        {status === 'pending' && (
+          <Alert variant="info">Đơn hàng của bạn đang được xử lý. Vui lòng chờ...</Alert>
+        )}
         {bills.map((item) => (
           <div key={item.id} className="bill-item">
             <img src={item.image_url} alt={`${item.first_name} ${item.last_name}`} className="bill-image" />
@@ -124,9 +129,11 @@ const Payment = () => {
               <div className="bill-amount">Số tiền: {item.amount} VNĐ</div>
               <div className="bill-status">Tình trạng thanh toán: {item.payment_status}</div>
             </div>
-            <Button className="btn btn-primary" variant="primary" onClick={() => handleMomo(item)}>
-              Thanh toán qua MOMO
-            </Button>
+            {item.payment_status !== 'PAID' && (
+              <Button className="btn btn-primary" variant="primary" onClick={() => handleMomo(item)}>
+                Thanh toán qua MOMO
+              </Button>
+            )}
           </div>
         ))}
       </Container>

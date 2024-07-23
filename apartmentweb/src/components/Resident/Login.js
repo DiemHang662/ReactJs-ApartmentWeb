@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Card } from 'react-bootstrap';
+import { Form, Button, Container, Alert } from 'react-bootstrap';
 import API, { setAuthToken, endpoints } from '../../configs/API';
 import { MyDispatchContext } from '../../configs/Contexts';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -12,7 +12,9 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [userType, setUserType] = useState('regular'); // New state for select box
+  const [userType, setUserType] = useState('regular'); 
+  const [isFocused, setIsFocused] = useState(false);
+  const [error, setError] = useState('');
   const dispatch = useContext(MyDispatchContext);
 
   const login = async () => {
@@ -41,6 +43,7 @@ const Login = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         console.info(user.data);
 
         dispatch({
@@ -48,15 +51,16 @@ const Login = () => {
           payload: user.data,
         });
 
-        if (userType === 'superuser') {
-          // Handle superuser login logic if needed
-          console.log('Superuser login detected');
+        if (user.data.is_superuser !== (userType === 'superuser')) {
+          setError('Đăng nhập không thành công');
+          return;
         }
 
         navigate('/'); 
       }, 100);
     } catch (ex) {
       console.error('Login error', ex);
+      setError('Vui lòng nhập lại username hoặc password');
     }
   };
 
@@ -65,11 +69,13 @@ const Login = () => {
       <div className="container-login">
         <h1 className="title">ĐĂNG NHẬP</h1>
         <Form>
-        <Form.Group controlId="formBasicUserType">
+          <Form.Group controlId="formBasicUserType">
             <Form.Select
               value={userType}
               onChange={(e) => setUserType(e.target.value)}
-              className="input"
+              className={`input ${isFocused ? 'focused' : ''}`}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
             >
               <option value="regular">Cư dân</option>
               <option value="superuser">Quản trị viên</option>
@@ -98,13 +104,16 @@ const Login = () => {
               className="password-toggle"
               onClick={() => setSecureTextEntry(!secureTextEntry)}
             >
-              {secureTextEntry ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+              {secureTextEntry ? <VisibilityOffIcon /> : <VisibilityIcon />}
             </Button>
           </Form.Group>
+
+          {error && <Alert variant="danger" style={{ width: '90%', margin: '5px 20px' , height:'55px'}}>{error}</Alert>}
          
           <Button variant="success" onClick={login} className="button">
             ĐĂNG NHẬP
           </Button>
+
         </Form>
       </div>
     </div>

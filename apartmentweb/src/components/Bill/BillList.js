@@ -80,7 +80,7 @@ const BillList = () => {
               <div className="bill-amount">Số tiền: {bill.amount} VNĐ</div>
               <div className="bill-status">Tình trạng thanh toán: {bill.payment_status}</div>
             </div>
-            <Button className="bill-button" onClick={() => navigate(`/bill/${bill.id}`)}>
+            <Button className="bill-button-primary" onClick={() => navigate(`/bill/${bill.id}`)}>
               <KeyboardDoubleArrowRightIcon />
             </Button>
           </div>
