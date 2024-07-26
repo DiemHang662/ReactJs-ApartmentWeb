@@ -39,7 +39,10 @@ const NavbarComponent = ({ searchTerm, setSearchTerm }) => {
               <NavDropdown.Item as={Link} to="/survey">Khảo sát</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/payment">Thanh toán</NavDropdown.Item>
               {user && user.is_superuser && (
-                <NavDropdown.Item as={Link} to="/reports">Thống kê báo cáo</NavDropdown.Item>
+                <>
+                  <NavDropdown.Item as={Link} to="/register">Cấp tài khoản</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/statistics">Thống kê báo cáo</NavDropdown.Item>
+                </>
               )}
               <NavDropdown.Divider />
               <NavDropdown.Item as={Link} to="/" onClick={handleLogout}>Đăng xuất</NavDropdown.Item>

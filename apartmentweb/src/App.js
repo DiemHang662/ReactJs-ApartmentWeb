@@ -4,15 +4,17 @@ import Home from './components/Home/Home';
 import BillList from './components/Bill/BillList';
 import BillDetail from './components/Bill/BillDetail';
 import Payment from './components/Payment/Payment';
-import Profile from './components/Resident/Profile';
-import ChangePassword from './components/Resident/ChangePassword';
-import ChangeAvatar from './components/Resident/ChangeAvatar';
 import ProductList from './components/Product/ProductList';
 import CartSummary from './components/CartSummary/CartSummary';
 import Feedback from './components/Feedback/Feedback';
 import FeedbackList from './components/Feedback/FeedbackList';
 import FeedbackDetail from './components/Feedback/FeedbackDetail';
+import Statistics from './components/Statistics/StatisticsChart';
 import Login from './components/Resident/Login';
+import Register from './components/Resident/Register';
+import ChangePassword from './components/Resident/ChangePassword';
+import ChangeAvatar from './components/Resident/ChangeAvatar';
+import Profile from './components/Resident/Profile';
 import './App.css';
 import { MyUserContext } from './configs/Contexts';
 
@@ -40,6 +42,10 @@ function App() {
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/change-password" element={<Profile/>} />
           <Route path="/change-avatar" element={<Profile/>} />
+
+          <Route path="/register" element={user ? <Register /> : <Navigate to="/login" />} />
+          <Route path="/statistics" element={<Statistics/>} />
+
         </Routes>
       </div>
     </Router>

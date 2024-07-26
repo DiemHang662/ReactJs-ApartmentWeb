@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.193.124:8000';
+const BASE_URL = 'http://192.168.1.9:8000';
 
 export const endpoints = {
   residents: '/api/residents/',
@@ -41,6 +41,8 @@ export const endpoints = {
   createSurvey: '/api/survey/create-survey/',
   surveyresult: '/api/surveyresult/',
   surveyresultID: (id) => `/api/surveyresult/${id}/`,
+
+  statistics: (id) => `/api/statistics/${id}/`,
 };
 
 export const setAuthToken = (token) => {

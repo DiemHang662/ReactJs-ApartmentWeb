@@ -110,7 +110,7 @@ const Login = () => {
 
           {error && <Alert variant="danger" style={{ width: '90%', margin: '5px 20px' , height:'55px'}}>{error}</Alert>}
          
-          <Button variant="success" onClick={login} className="button">
+          <Button variant="success" onClick={login} className="loginBtn">
             ĐĂNG NHẬP
           </Button>
 

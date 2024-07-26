@@ -20,7 +20,7 @@ const Profile = () => {
         try {
             const api = await authApi();
             const response = await api.get(endpoints.residents);
-            console.log('API response:', response.data); // Log the response data for debugging
+            console.log('API response:', response.data);
             setResident(response.data);
         } catch (error) {
             console.error('Error fetching profile:', error);
@@ -72,9 +72,6 @@ const Profile = () => {
                     {user.avatar_url && (
                         <Image
                             src={user.avatar_url}
-
-                            width={70}
-                            height={70}
                             className="avatar-image"
                         />
                     )}

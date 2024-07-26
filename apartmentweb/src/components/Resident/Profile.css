@@ -8,7 +8,9 @@
   }
   
   .avatar-image {
-    width: 70px;
+    margin-top: 20px;
+    width: 100%;
+    height:400px;
   }
   
   .icon-button:hover {

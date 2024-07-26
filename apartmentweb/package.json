@@ -11,10 +11,12 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.3",
     "crypto-js": "^4.2.0",
     "mdb-react-ui-kit": "^8.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
+    "react-chartjs-2": "^5.2.0",
     "react-cookie": "^7.1.4",
     "react-cookies": "^0.1.1",
     "react-dom": "^18.3.1",
@@ -31,7 +33,6 @@
     "eject": "react-scripts eject"
   },
   "proxy": "https://test-payment.momo.vn",
-
   "eslintConfig": {
     "extends": [
       "react-app",

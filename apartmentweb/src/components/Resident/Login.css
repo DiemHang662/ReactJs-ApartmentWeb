@@ -45,13 +45,12 @@
   font-weight: 500;
 }
 
-.button {
-  width: 23%;
+.loginBtn {
+  width: 25%;
   height:50px;
-  margin-left: 180px;
+  margin-left: 180px !important;
   background-color: #00CC00;
   text-align: center;
-  font-weight: 400;
   border-radius: 0%;
 }
 
