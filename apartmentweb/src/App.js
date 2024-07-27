@@ -15,6 +15,7 @@ import Register from './components/Resident/Register';
 import ChangePassword from './components/Resident/ChangePassword';
 import ChangeAvatar from './components/Resident/ChangeAvatar';
 import Profile from './components/Resident/Profile';
+import Chat from './components/Chat/Chat';
 import './App.css';
 import { MyUserContext } from './configs/Contexts';
 
@@ -44,7 +45,9 @@ function App() {
           <Route path="/change-avatar" element={<Profile/>} />
 
           <Route path="/register" element={user ? <Register /> : <Navigate to="/login" />} />
-          <Route path="/statistics" element={<Statistics/>} />
+          <Route path="/statistics" element={<Statistics/>}  />
+          
+          <Route path="/chat" element={<Chat/>} />
 
         </Routes>
       </div>

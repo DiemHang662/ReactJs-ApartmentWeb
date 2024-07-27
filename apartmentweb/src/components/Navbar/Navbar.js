@@ -6,6 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ChatIcon from '@mui/icons-material/Chat';
 import './Navbar.css';
 import { MyUserContext, MyDispatchContext } from '../../configs/Contexts';
 
@@ -34,6 +35,7 @@ const NavbarComponent = ({ searchTerm, setSearchTerm }) => {
             <Nav.Link as={Link} to="/"><HomeIcon /> Trang chủ</Nav.Link>
             <Nav.Link as={Link} to="/bill"><ReceiptIcon /> Hóa đơn</Nav.Link>
             <Nav.Link as={Link} to="/product"><ShoppingCartIcon /> Mua hàng</Nav.Link>
+            <Nav.Link as={Link} to="/chat"><ChatIcon /> Trò chuyện</Nav.Link> 
             <NavDropdown title="Khác" id="basic-nav-dropdown" align="end">
               <NavDropdown.Item as={Link} to="/feedback">Phản ánh</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/survey">Khảo sát</NavDropdown.Item>

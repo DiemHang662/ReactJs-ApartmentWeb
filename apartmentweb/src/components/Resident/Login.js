@@ -37,27 +37,25 @@ const Login = () => {
       console.log('Login successful, token:', token);
       setAuthToken(token);
 
-      setTimeout(async () => {
-        let user = await API.get(endpoints.currentUser, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      let user = await API.get(endpoints.currentUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        console.info(user.data);
+      console.info(user.data);
 
-        dispatch({
-          type: 'login',
-          payload: user.data,
-        });
+      dispatch({
+        type: 'login',
+        payload: user.data,
+      });
 
-        if (user.data.is_superuser !== (userType === 'superuser')) {
-          setError('Đăng nhập không thành công');
-          return;
-        }
+      if (user.data.is_superuser !== (userType === 'superuser')) {
+        setError('Đăng nhập không thành công');
+        return;
+      }
 
-        navigate('/'); 
-      }, 100);
+      navigate('/'); 
     } catch (ex) {
       console.error('Login error', ex);
       setError('Vui lòng nhập lại username hoặc password');
