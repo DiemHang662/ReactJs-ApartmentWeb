@@ -1,18 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import API, { setAuthToken, endpoints } from '../../configs/API';
 import { MyDispatchContext } from '../../configs/Contexts';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import './Login.css'; 
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import { auth, signInWithPopup, googleProvider, facebookProvider } from '../../Firebase';
+import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [userType, setUserType] = useState('regular'); 
+  const [userType, setUserType] = useState('regular');
   const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState('');
   const dispatch = useContext(MyDispatchContext);
@@ -55,12 +58,63 @@ const Login = () => {
         return;
       }
 
-      navigate('/'); 
+      navigate('/');
     } catch (ex) {
       console.error('Login error', ex);
       setError('Vui lòng nhập lại username hoặc password');
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+  
+      const userData = {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        uid: user.uid,
+      };
+      localStorage.setItem("email", user.email);
+  
+      // Dispatch the user data to the context
+      dispatch({
+        type: 'login',
+        payload: userData,
+      });
+  
+      // Navigate to the home page or any other desired page
+      navigate('/profile');
+    } catch (error) {
+      console.error('Google Sign-In error', error);
+      setError('Đăng nhập bằng Google không thành công');
+    }
+  };
+  
+
+  // Uncomment and implement Facebook Sign-In if needed
+  // const handleFacebookSignIn = async () => {
+  //   try {
+  //     await auth.signOut(); // Ensure sign-out completes
+  //     const result = await signInWithPopup(auth, facebookProvider);
+  //     const user = result.user;
+  //     localStorage.setItem("email", user.email);
+  //     dispatch({
+  //       type: 'login',
+  //       payload: {
+  //         email: user.email,
+  //         displayName: user.displayName,
+  //         photoURL: user.photoURL,
+  //         uid: user.uid,
+  //       },
+  //     });
+  //     navigate('/');
+  //   } catch (error) {
+  //     console.error('Facebook Sign-In error', error);
+  //     setError('Đăng nhập bằng Facebook không thành công');
+  //   }
+  // };
 
   return (
     <div className="background">
@@ -105,13 +159,24 @@ const Login = () => {
               {secureTextEntry ? <VisibilityOffIcon /> : <VisibilityIcon />}
             </Button>
           </Form.Group>
-
-          {error && <Alert variant="danger" style={{ width: '90%', margin: '5px 20px' , height:'55px'}}>{error}</Alert>}
-         
+          {error && (
+            <Alert variant="danger" style={{ width: '95%', margin: '10px 20px', height: '60px' }}>
+              {error}
+            </Alert>
+          )}
           <Button variant="success" onClick={login} className="loginBtn">
             ĐĂNG NHẬP
           </Button>
-
+          <div className="social-buttons">
+            <Button variant="danger" className="google" onClick={handleGoogleSignIn}>
+              <GoogleIcon /> Đăng nhập Google
+            </Button>
+            {/* Uncomment if Facebook sign-in is implemented
+            <Button variant="primary" className="facebook" onClick={handleFacebookSignIn}>
+              <FacebookIcon /> Đăng nhập Facebook
+            </Button>
+            */}
+          </div>
         </Form>
       </div>
     </div>

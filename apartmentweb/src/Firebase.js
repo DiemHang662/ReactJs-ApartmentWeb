@@ -1,9 +1,7 @@
-// src/Firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCf5cgs16N_ewHu6Rvypnt2TOozU3AC2aI",
   authDomain: "apartmentweb-916d6.firebaseapp.com",
@@ -15,6 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app); 
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
 
-export { auth, signInWithEmailAndPassword, db }; 
+export { auth, signInWithEmailAndPassword, signInWithPopup, googleProvider, db };
